@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="robots" content="noindex,nofollow">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <title>CardCreator</title>
+    <style>
+        .card {
+            width: 180px;
+            height: 260px;
+            background: antiquewhite;
+        }
+
+        .title{
+            font-weight: bold;
+            height: 30px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .illustration {
+            font-size: 64px;
+            text-align: center;
+            height: 100px;
+        }
+
+        .effect {
+            text-align: left;
+            vertical-align: top;
+        }
+
+    </style>
+</head>
+<body>
+    <p>
+        ファイル名のprefix
+        <input id="prefix" type="text" value="card_" placeholder="prefix"><br>
+    </p>
+    <p>カード内容「タイトル　イラスト　本文」(全角空白区切り)</p>
+    <textarea id="card-text" cols="50" rows="5">タイトル　😒　ほん</textarea><br>
+    <div>
+        <button style="margin: 12px" onclick="output()">出力</button>
+        <button style="margin: 12px" onclick="save()">保存</button>
+    </div>
+    <br>
+    <div id="output"></div>
+    <a id="download" href="#" download="card.png"></a>
+<script>
+    // カード作成
+    function output(){
+        const text = document.getElementById("card-text").value;
+        
+        let outputText = '';
+        text.split("\n").forEach(element => { 
+            const data = element.split('　');
+            outputText += `
+            <div>
+                <table border="1" class="card">
+                    <tr><td class="title">${data[0]}</td></tr>
+                    <tr><td class="illustration">${data[1]}</td></tr>
+                    <tr><td class="effect">${data[2]}</td></tr>
+                </table>
+            </div>
+        `;
+        });
+        document.getElementById('output').innerHTML = outputText;
+    }
+
+    // カード保存
+    function save() {
+        const prefix = document.getElementById('prefix').value;
+        const list = Array.from(document.getElementsByClassName("card"));
+        const downloadLink = document.getElementById('download');
+        let count = 1;
+        for(const target of list) {
+            html2canvas(target, {useCORS: true}).then(canvas => {
+                const base64 = canvas.toDataURL('image/png');
+                downloadLink.href = base64;
+                downloadLink.download = `${prefix}${count}.png`;
+                downloadLink.click();
+                count += 1;
+            });
+        }
+    }
+</script>    
+</body>
+</html>
