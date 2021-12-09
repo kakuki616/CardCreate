@@ -8,7 +8,7 @@
     <title>CardCreator</title>
     <style>
         .card {
-            width: 180px;
+            width: 190px;
             height: 260px;
             background: antiquewhite;
         }
@@ -21,7 +21,7 @@
         }
 
         .illustration {
-            font-size: 64px;
+            font-size: 60px;
             text-align: center;
             height: 100px;
         }
@@ -38,7 +38,7 @@
         ファイル名のprefix
         <input id="prefix" type="text" value="card_" placeholder="prefix"><br>
     </p>
-    <p>カード内容「タイトル　イラスト　本文」(全角空白区切り)</p>
+    <p>カード内容「タイトル　イラスト　本文、背景色」(全角空白区切り)</p>
     <textarea id="card-text" cols="50" rows="5">タイトル　😒　ほん</textarea><br>
     <div>
         <button style="margin: 12px" onclick="output()">出力</button>
@@ -55,9 +55,10 @@
         let outputText = '';
         text.split("\n").forEach(element => { 
             const data = element.split('　');
+            const color = data.length > 3 ? `style="background: ${data[3]}"` : "" ;
             outputText += `
             <div>
-                <table border="1" class="card">
+                <table border="1" class="card" ${color}>
                     <tr><td class="title">${data[0]}</td></tr>
                     <tr><td class="illustration">${data[1]}</td></tr>
                     <tr><td class="effect">${data[2]}</td></tr>
