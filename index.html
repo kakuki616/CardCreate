@@ -75,14 +75,17 @@
         const list = Array.from(document.getElementsByClassName("card"));
         const downloadLink = document.getElementById('download');
         let count = 1;
+        let i = 0;
         for(const target of list) {
-            html2canvas(target, {useCORS: true}).then(canvas => {
-                const base64 = canvas.toDataURL('image/png');
-                downloadLink.href = base64;
-                downloadLink.download = `${prefix}${count}.png`;
-                downloadLink.click();
-                count += 1;
-            });
+            setTimeout(() => {
+                html2canvas(target, {useCORS: true}).then(canvas => {
+                    const base64 = canvas.toDataURL('image/png');
+                    downloadLink.href = base64;
+                    downloadLink.download = `${prefix}${count}.png`;
+                    downloadLink.click();
+                    count += 1;
+                });
+            }, 300*i++)
         }
     }
 </script>    
