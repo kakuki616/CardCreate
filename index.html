@@ -36,10 +36,12 @@
 </head>
 <body>
     <p>
-        ファイル名のprefix
-        <input id="prefix" type="text" value="card_" placeholder="prefix"><br>
+        ファイル名のprefix<input id="prefix" type="text" value="card_" placeholder="prefix"><br>
     </p>
-    <p>カード内容「タイトル　イラスト　本文、背景色」(全角空白区切り)</p>
+    <p>
+        横幅<input id="width" type="number" value="190"><br>
+    </p>
+    <p>カード内容「タイトル　イラスト　本文　背景色」(全角空白区切り)</p>
     <textarea id="card-text" cols="50" rows="5">タイトル　😒　ほん</textarea><br>
     <div>
         <button style="margin: 12px" onclick="output()">出力</button>
@@ -49,17 +51,22 @@
     <div id="output" style="display: flex;flex-wrap: wrap;"></div>
     <a id="download" href="#" download="card.png"></a>
 <script>
+
+    const url = new URL(window.location.href);
+    const w = url.searchParams.get('width') || 190;
+    document.getElementById("width").value = w;
+
     // カード作成
     function output(){
         const text = document.getElementById("card-text").value;
-        
+        const width = document.getElementById("width").value;
         let outputText = '';
         text.split("\n").forEach(element => { 
             const data = element.split('　');
-            const color = data.length > 3 ? `style="background: ${data[3]}"` : "" ;
+            const color = data.length > 3 ? `background: ${data[3]}` : "" ;
             outputText += `
             <div>
-                <table border="1" class="card" ${color}>
+                <table border="1" class="card" style="${color}; width:${width}px" >
                     <tr><td class="title">${data[0]}</td></tr>
                     <tr><td class="illustration">${data[1]}</td></tr>
                     <tr><td class="effect">${data[2]}</td></tr>
